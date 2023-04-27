@@ -1,0 +1,11 @@
+Titan
+/dev/sda2       219G  184G   25G   89% /
+/dev/sdb1       1.8T   22G  1.7T    2% /res
+/dev/sdc1       1.8T  1.4T  408G   77% /data
+/dev/sdd1       3.6T  2.3T  1.2T   67% /home
+
+
+2080ti
+/dev/sda2       219G   46G  163G  22% /
+/dev/sdb2       3.6T  2.9T  566G  84% /home
+/dev/sdc2       2.7T  2.2T  434G  84% /mnt
