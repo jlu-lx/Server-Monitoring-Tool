@@ -5,15 +5,13 @@ from utils.server_info import get_server_usage
 import json
 import socket
 
-# 指定要发送到的主机和端口
-# host = "192.168.0.100"
-# port = 12345
+#指定要发送到的主机和端口
+host = "192.168.0.100"
+port = 12345
 
-# # 创建一个socket对象
-# sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# 创建一个socket对象
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# # 连接到指定的主机和端口
-# sock.connect((host, port))
 
 
 # 获取当前的日期和时间，分钟以十分钟为单位，秒置零
@@ -24,6 +22,9 @@ def get_current_time():
 
 
 def send_message():
+    # 连接到指定的主机和端口
+    sock.connect((host, port))
+
     # 获取CPU信息
     cpu_usage = get_cpu_usage()
     gpu_usage = get_gpu_usage()
@@ -35,7 +36,6 @@ def send_message():
     # print(f"gpu_usage: {gpu_usage}")
     # # 打印磁盘信息
     # print(f"server_usage: {server_usage}")
-
 
     # 将CPU、GPU和磁盘信息打包成一个JSON格式的字符串
     data = {
@@ -49,9 +49,9 @@ def send_message():
 
     print(f"json_data: {json_data}")
     # # 发送数据
-    # sock.sendall(json_data.encode())
+    sock.sendall(json_data.encode())
     # # 关闭连接
-    # sock.close()
+    sock.close()
 
 if __name__ == "__main__":
     send_message()

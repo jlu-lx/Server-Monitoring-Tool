@@ -11,6 +11,6 @@ for device in context.list_devices(subsystem='block', DEVTYPE='disk'):
 # 获取主机名称
 hostname = socket.gethostname()
 
-# 输出主机名称和Linux系统名称
+# 输出主机名称和Linux系统名称...
 print("Hostname:", hostname)
 print("Linux system name:", hostname)
