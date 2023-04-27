@@ -3,60 +3,76 @@ import psutil
 
 
 def get_gpu_info():
-    gpu_info = {}  # create a dict
+    gpu_usage = {}  # create a dict
     pynvml.nvmlInit()
     num_gpus = pynvml.nvmlDeviceGetCount()
 
     for i in range(num_gpus):
+
+        
+
         handle = pynvml.nvmlDeviceGetHandleByIndex(i)
-        name = pynvml.nvmlDeviceGetName(handle)
-        print(f"GPU {i}: {name}")
-        temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
-        print(f"GPU {i} temperature: {temp}°C")
-        # Get the GPU utilization percentage
+        gpu_name = pynvml.nvmlDeviceGetName(handle)
+        # 把name字符串中的空格替换为下划线
+        gpu_name = gpu_name.replace(" ", "_")+"_"+str(i)
+        gpu_temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
         gpu_util = pynvml.nvmlDeviceGetUtilizationRates(handle)
+        gpu_fan  = pynvml.nvmlDeviceGetFanSpeed(handle)
+
+        # Get memory info for the GPU
+        # mem_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+        # gpu_mem = 100 * mem_info.used / mem_info.total
+        # Get the list of running processes on the GPU
+        
+        # add gpu_name to gpu_usage dict
+        gpu_usage["gpu_name"] = gpu_name
+        # add gpu_temp to gpu_usage dict
+        gpu_usage["gpu_temp"] = gpu_temp
+        # add gpu_util to gpu_usage dict
+        gpu_usage["gpu_util"] = gpu_util.gpu
+        # add gpu_fan to gpu_usage dict
+        gpu_usage["gpu_fan"] = gpu_fan
+
+
+        print(f"GPU {i}: {gpu_name}")
+        print(f"GPU {i} temperature: {gpu_temp}°C")
+        # Get the GPU utilization percentage
         print(f"GPU {i} utilization: {gpu_util.gpu} %")
         # Get the GPU fan speed
-        fan_speed  = pynvml.nvmlDeviceGetFanSpeed(handle)
         # 获取风扇转速
-        print(f"GPU {i} fan speed: {fan_speed }%")
-        # Get memory info for the GPU
-        mem_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
-        mem_percent = 100 * mem_info.used / mem_info.total
-
-        # Get the list of running processes on the GPU
+        print(f"GPU {i} fan speed: {gpu_fan }%")
+        # print(f"Used Memory percent {i}: {gpu_mem:.2f}%\n")
         process_info = pynvml.nvmlDeviceGetComputeRunningProcesses(handle)
-
-        print(f"Total Memory{i}: {mem_info.total/1024**2:.2f} MB")
-        print(f"Free Memory{i}: {mem_info.free/1024**2:.2f} MB")
-        print(f"Used Memory{i}: {mem_info.used/1024**2:.2f} MB\n")
-        print(f"Used Memory percent {i}: {mem_percent:.2f}%\n")
-
         if len(process_info) > 0:
             print("Running Processes:")
             for process in process_info:
                 pid = process.pid
-                used_memory = process.usedGpuMemory / 1024 ** 2
+                gpu_mem = process.usedGpuMemory / 1024 ** 2
+
                 try:
                     process = psutil.Process(pid)
                     process_name = process.name()
-                    username = process.username()
+                    user_name = process.username()
                 except psutil.NoSuchProcess:
                     process_name = "<unknown>"
-                    username = "<unknown>"
+                    user_name = "<unknown>"
+                # add username to gpu_usage dict
+                gpu_usage["user_name"] = user_name
+                # add used_memory to gpu_usage dict
+                gpu_usage["gpu_mem"] = gpu_mem
 
-                print(f"Process ID: {pid}")
-                print(f"Used Memory: {used_memory:.2f} MB")
-                print(f"Process Name: {process_name}")
-                print(f"User Name: {username}")
+                print(f"{user_name}Used Memory: {gpu_mem:.2f} MB")
+                print(f"User Name: {user_name}")
         else:
             print("No running processes found.")
 
     pynvml.nvmlShutdown()
+    
+
+    print(f'gpu_usage: {gpu_usage}')
 
 
-
-    return gpu_info
+    return gpu_usage
 
 if __name__ == '__main__':
     get_gpu_info()
