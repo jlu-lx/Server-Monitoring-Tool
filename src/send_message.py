@@ -5,9 +5,14 @@ from utils.server_info import get_server_usage
 import json
 import socket
 
+
+
 #指定要发送到的主机和端口
 host = "192.168.0.100"
 port = 12345
+
+# 定义时间_间隔变量，单位为秒
+time_interval = 600
 
 # 创建一个socket对象
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,4 +61,4 @@ def send_message():
 if __name__ == "__main__":
     while True:
         send_message()
-        time.sleep(600)  # Send data every 10 minutes (600 seconds)
+        time.sleep(time_interval)  # Send data every 10 minutes (600 seconds)

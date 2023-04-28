@@ -1,4 +1,3 @@
-import pynvml
 import psutil
 import socket
 from .cpu_info import get_cpu_usage

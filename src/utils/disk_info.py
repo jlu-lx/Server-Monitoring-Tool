@@ -1,5 +1,4 @@
 import psutil
-import socket
 
 def get_disk_usage():
     

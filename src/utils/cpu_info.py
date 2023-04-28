@@ -1,6 +1,4 @@
 import psutil
-import json
-import requests
 
 def get_cpu_usage():
 
