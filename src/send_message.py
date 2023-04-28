@@ -54,4 +54,6 @@ def send_message():
     sock.close()
 
 if __name__ == "__main__":
-    send_message()
+    while True:
+        send_message()
+        time.sleep(600)  # Send data every 10 minutes (600 seconds)
