@@ -1,0 +1,12 @@
+[Unit]
+Description=Server Monitoring Service
+After=network.target
+
+[Service]
+User=your_user
+WorkingDirectory=/home/liux/dev_code/Server-Monitoring-Tool/src
+ExecStart=/usr/bin/python3 /home/liux/dev_code/Server-Monitoring-Tool/src/send_message.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
