@@ -1,0 +1,4 @@
+socket
+pyudev
+pynvml
+psutil
