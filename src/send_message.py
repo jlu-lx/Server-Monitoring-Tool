@@ -6,7 +6,6 @@ import json
 import socket
 
 
-
 #指定要发送到的主机和端口
 host = "192.168.0.100"
 port = 12345
@@ -16,7 +15,6 @@ time_interval = 600
 
 # 创建一个socket对象
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 
 
 # 获取当前的日期和时间，分钟以十分钟为单位，秒置零
